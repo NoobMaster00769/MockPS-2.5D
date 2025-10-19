@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class SimpleParallax25D : MonoBehaviour
 {
+    [Header("Camera Selection")]
+    [Tooltip("Leave empty to auto-find Main Camera")]
+    public Camera targetCamera;
+
+    [Tooltip("Auto-find camera by tag (e.g., 'MainCamera' or 'TopCamera')")]
+    public string cameraTag = "";
+
     [Header("Parallax Settings")]
     [Range(0f, 1f)]
     [Tooltip("0 = moves with camera (foreground), 1 = doesn't move (far background)")]
@@ -34,16 +41,35 @@ public class SimpleParallax25D : MonoBehaviour
 
     void Start()
     {
-        // Find the main camera
-        Camera mainCam = Camera.main;
-        if (mainCam == null)
+        // Find the target camera
+        if (targetCamera == null)
         {
-            Debug.LogError("SimpleParallax25D: No Main Camera found!");
+            if (!string.IsNullOrEmpty(cameraTag))
+            {
+                // Find camera by tag
+                GameObject camObj = GameObject.FindGameObjectWithTag(cameraTag);
+                if (camObj != null)
+                {
+                    targetCamera = camObj.GetComponent<Camera>();
+                    Debug.Log($"Parallax on {gameObject.name} found camera by tag: {cameraTag}");
+                }
+            }
+
+            // Fallback to main camera
+            if (targetCamera == null)
+            {
+                targetCamera = Camera.main;
+            }
+        }
+
+        if (targetCamera == null)
+        {
+            Debug.LogError($"SimpleParallax25D on {gameObject.name}: No camera found!");
             enabled = false;
             return;
         }
 
-        cameraTransform = mainCam.transform;
+        cameraTransform = targetCamera.transform;
         lastCameraPosition = cameraTransform.position;
         startPosition = transform.position;
         initialScale = transform.localScale;
@@ -59,7 +85,7 @@ public class SimpleParallax25D : MonoBehaviour
             Debug.LogWarning("SimpleParallax25D: No SpriteRenderer found on " + gameObject.name);
         }
 
-        Debug.Log($"Parallax initialized on {gameObject.name} - Strength: {parallaxStrength}");
+        Debug.Log($"Parallax initialized on {gameObject.name} - Camera: {targetCamera.name}, Strength: {parallaxStrength}");
     }
 
     void LateUpdate()
@@ -130,6 +156,17 @@ public class SimpleParallax25D : MonoBehaviour
     {
         parallaxStrength = Mathf.Clamp01(horizontal);
         verticalParallaxStrength = Mathf.Clamp01(vertical);
+    }
+
+    // Change target camera at runtime
+    public void SetTargetCamera(Camera cam)
+    {
+        targetCamera = cam;
+        if (cam != null)
+        {
+            cameraTransform = cam.transform;
+            lastCameraPosition = cameraTransform.position;
+        }
     }
 
     void OnDrawGizmosSelected()

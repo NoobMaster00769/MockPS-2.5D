@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - TopCamera
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - Water
   - UI
   - Wall
-  - 
-  - 
+  - BottomWorld
+  - TopWorld
   - 
   - 
   - 
@@ -48,11 +49,17 @@ TagManager:
   - name: 2Clouds
     uniqueID: 1008125995
     locked: 0
-  - name: 3Background
+  - name: 3city1
     uniqueID: 1653314819
     locked: 0
-  - name: 4Foreground
+  - name: 4city2
     uniqueID: 1001497411
+    locked: 0
+  - name: city3
+    uniqueID: 3118074019
+    locked: 0
+  - name: treeline
+    uniqueID: 332049861
     locked: 0
   - name: ObstacleBehind
     uniqueID: 1286255939
