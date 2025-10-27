@@ -1,60 +1,37 @@
+//using UnityEngine;
+
+// ===== InvertedPlayerMirror.cs =====
+// Place this on the INVERTED player (SEPARATE FILE!)
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Creates a fully inverted mirror of the player character
-/// Inverts ALL movements: left/right, up/down, forward/back
-/// Place this on the inverted/mirrored player GameObject
-/// </summary>
 public class InvertedPlayerMirror : MonoBehaviour
 {
     [Header("Mirror Settings")]
-    [Tooltip("The original player to mirror")]
-    public Transform originalPlayer;
-
-    [Tooltip("The vertical axis line where mirroring occurs (Y position)")]
+    public EnhancedPlayer25D originalPlayer;
     public float mirrorAxisY = 0f;
-
-    [Tooltip("The horizontal axis line where X mirroring occurs")]
     public float mirrorAxisX = 0f;
-
-    [Tooltip("The depth axis line where Z mirroring occurs")]
     public float mirrorAxisZ = 0f;
-
-    [Tooltip("Auto-find player with tag 'Player'")]
     public bool autoFindPlayer = true;
 
     [Header("Inversion Options")]
-    [Tooltip("Invert horizontal movement (left becomes right)")]
     public bool invertX = true;
-
-    [Tooltip("Invert vertical movement (up becomes down) - should be true")]
     public bool invertY = true;
-
-    [Tooltip("Invert depth movement (forward becomes back)")]
     public bool invertZ = true;
-
-    [Tooltip("Invert sprite flip direction")]
     public bool invertSpriteFlip = true;
 
     [Header("Animation Sync")]
-    [Tooltip("Sync animations with original player")]
     public bool syncAnimations = true;
-
-    [Tooltip("Invert forward/backward animation states")]
     public bool invertDepthAnimations = true;
 
     [Header("Visual Settings")]
-    [Tooltip("Apply visual effect to distinguish mirror (opacity, color, etc)")]
     public bool applyMirrorEffect = true;
-
-    [Range(0.3f, 1f)]
-    [Tooltip("Alpha transparency of mirrored character")]
-    public float mirrorAlpha = 0.7f;
-
-    [Tooltip("Tint color for mirror effect")]
+    [Range(0.3f, 1f)] public float mirrorAlpha = 0.7f;
     public Color mirrorTint = new Color(0.8f, 0.8f, 1f, 1f);
+
+    [Header("Debug")]
+    public bool showDebugInfo = true;
 
     private SpriteRenderer mirrorSpriteRenderer;
     private SpriteRenderer originalSpriteRenderer;
@@ -65,18 +42,24 @@ public class InvertedPlayerMirror : MonoBehaviour
 
     void Start()
     {
-        // Auto-find player if needed
         if (autoFindPlayer && originalPlayer == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
             {
-                originalPlayer = playerObj.transform;
-                Debug.Log("InvertedPlayerMirror: Auto-found player - " + playerObj.name);
+                originalPlayer = playerObj.GetComponent<EnhancedPlayer25D>();
+                if (originalPlayer != null)
+                    Debug.Log("InvertedPlayerMirror: Auto-found player");
+                else
+                {
+                    Debug.LogError("InvertedPlayerMirror: No EnhancedPlayer25D found!");
+                    enabled = false;
+                    return;
+                }
             }
             else
             {
-                Debug.LogError("InvertedPlayerMirror: Could not find player with 'Player' tag!");
+                Debug.LogError("InvertedPlayerMirror: No player with 'Player' tag!");
                 enabled = false;
                 return;
             }
@@ -89,58 +72,56 @@ public class InvertedPlayerMirror : MonoBehaviour
             return;
         }
 
-        // Set mirror axes - use middle point between current positions if both exist
-        // Otherwise use original player position
         if (transform.position != Vector3.zero)
         {
-            // Calculate mirror axis as midpoint between original and inverted starting positions
-            mirrorAxisX = (originalPlayer.position.x + transform.position.x) / 2f;
-            mirrorAxisY = (originalPlayer.position.y + transform.position.y) / 2f;
-            mirrorAxisZ = (originalPlayer.position.z + transform.position.z) / 2f;
+            mirrorAxisX = (originalPlayer.transform.position.x + transform.position.x) / 2f;
+            mirrorAxisY = (originalPlayer.transform.position.y + transform.position.y) / 2f;
+            mirrorAxisZ = (originalPlayer.transform.position.z + transform.position.z) / 2f;
         }
         else
         {
-            // Default to original player's position
-            mirrorAxisX = originalPlayer.position.x;
-            mirrorAxisY = originalPlayer.position.y;
-            mirrorAxisZ = originalPlayer.position.z;
+            mirrorAxisX = originalPlayer.transform.position.x;
+            mirrorAxisY = originalPlayer.transform.position.y;
+            mirrorAxisZ = originalPlayer.transform.position.z;
         }
 
-        // Get sprite renderers
+        Vector3 initialMirrorPos = transform.position;
+        if (invertY)
+        {
+            float distY = originalPlayer.transform.position.y - mirrorAxisY;
+            initialMirrorPos.y = mirrorAxisY - distY + 5f;
+        }
+        transform.position = initialMirrorPos;
+
         mirrorSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         originalSpriteRenderer = originalPlayer.GetComponentInChildren<SpriteRenderer>();
 
-        // Get animators
         if (syncAnimations)
         {
             mirrorAnimator = GetComponentInChildren<Animator>();
             originalAnimator = originalPlayer.GetComponentInChildren<Animator>();
-
-            if (mirrorAnimator == null)
-            {
-                Debug.LogWarning("InvertedPlayerMirror: No Animator found on mirror player!");
-            }
-            if (originalAnimator == null)
-            {
-                Debug.LogWarning("InvertedPlayerMirror: No Animator found on original player!");
-            }
         }
 
-        // Apply mirror visual effect
         if (applyMirrorEffect && mirrorSpriteRenderer != null)
         {
-            Color color = mirrorTint;
-            color.a = mirrorAlpha;
-            mirrorSpriteRenderer.color = color;
+            Color c = mirrorTint;
+            c.a = mirrorAlpha;
+            mirrorSpriteRenderer.color = c;
         }
 
-        lastOriginalPosition = originalPlayer.position;
-
-        // Position the mirror initially
+        lastOriginalPosition = originalPlayer.transform.position;
         UpdateMirrorPosition();
-
         initialized = true;
-        Debug.Log("InvertedPlayerMirror initialized successfully!");
+
+        Debug.Log("InvertedPlayerMirror initialized!");
+    }
+
+    void Update()
+    {
+        if (initialized && originalPlayer != null && syncAnimations)
+        {
+            SyncAnimationParameters();
+        }
     }
 
     void LateUpdate()
@@ -149,53 +130,33 @@ public class InvertedPlayerMirror : MonoBehaviour
 
         UpdateMirrorPosition();
         UpdateMirrorRotationAndScale();
-
-        if (syncAnimations)
-        {
-            SyncAnimationParameters();
-        }
     }
 
     void UpdateMirrorPosition()
     {
-        Vector3 originalPos = originalPlayer.position;
-        Vector3 newPos = transform.position;
+        Vector3 originalPos = originalPlayer.transform.position;
+        Vector3 newPos = Vector3.zero;
 
-        // Calculate inverted position based on movement from axis
         if (invertX)
         {
-            // Invert X: if player goes right (+X), mirror goes left (-X)
-            float distanceFromAxisX = originalPos.x - mirrorAxisX;
-            newPos.x = mirrorAxisX - distanceFromAxisX;
+            float distX = originalPos.x - mirrorAxisX;
+            newPos.x = mirrorAxisX - distX;
         }
-        else
-        {
-            newPos.x = originalPos.x;
-        }
+        else newPos.x = originalPos.x;
 
         if (invertY)
         {
-            // Invert Y: if player goes up (+Y), mirror goes down (-Y)
-            float distanceFromAxisY = originalPos.y - mirrorAxisY;
-            newPos.y = mirrorAxisY - distanceFromAxisY;
+            float distY = originalPos.y - mirrorAxisY;
+            newPos.y = mirrorAxisY - distY;
         }
-        else
-        {
-            newPos.y = originalPos.y;
-        }
+        else newPos.y = originalPos.y;
 
         if (invertZ)
         {
-            // Invert Z: if player goes forward (into screen +Z), mirror goes back (-Z)
-            // We need a Z axis point to mirror around
-            float mirrorAxisZ = 0f; // You can adjust this if needed
-            float distanceFromAxisZ = originalPos.z - mirrorAxisZ;
-            newPos.z = mirrorAxisZ - distanceFromAxisZ;
+            float distZ = originalPos.z - mirrorAxisZ;
+            newPos.z = mirrorAxisZ - distZ;
         }
-        else
-        {
-            newPos.z = originalPos.z;
-        }
+        else newPos.z = originalPos.z;
 
         transform.position = newPos;
         lastOriginalPosition = originalPos;
@@ -203,28 +164,15 @@ public class InvertedPlayerMirror : MonoBehaviour
 
     void UpdateMirrorRotationAndScale()
     {
-        // Flip the entire mirror GameObject on Y axis to invert it visually (upside down)
-        Vector3 scale = originalPlayer.localScale;
-
-        if (invertY)
-        {
-            scale.y = -Mathf.Abs(scale.y); // Make Y scale negative to flip vertically
-        }
-
+        Vector3 scale = originalPlayer.transform.localScale;
+        if (invertY) scale.y = -Mathf.Abs(scale.y);
         transform.localScale = scale;
 
-        // Handle sprite flipping for X direction
         if (mirrorSpriteRenderer != null && originalSpriteRenderer != null)
         {
-            if (invertSpriteFlip && invertX)
-            {
-                // Since movement is inverted, flip sprite to match direction
-                mirrorSpriteRenderer.flipX = originalSpriteRenderer.flipX;
-            }
-            else
-            {
-                mirrorSpriteRenderer.flipX = !originalSpriteRenderer.flipX;
-            }
+            mirrorSpriteRenderer.flipX = invertSpriteFlip && invertX
+                ? originalSpriteRenderer.flipX
+                : !originalSpriteRenderer.flipX;
         }
     }
 
@@ -232,96 +180,50 @@ public class InvertedPlayerMirror : MonoBehaviour
     {
         if (mirrorAnimator == null || originalAnimator == null) return;
 
-        // Sync Speed parameter
         if (HasParameter(originalAnimator, "Speed"))
-        {
-            float speed = originalAnimator.GetFloat("Speed");
-            mirrorAnimator.SetFloat("Speed", speed);
-        }
+            mirrorAnimator.SetFloat("Speed", originalAnimator.GetFloat("Speed"));
 
-        // Sync Grounded state
         if (HasParameter(originalAnimator, "isGrounded"))
-        {
-            bool isGrounded = originalAnimator.GetBool("isGrounded");
-            // Mirror is inverted, so grounded state remains same (grounded to ceiling)
-            mirrorAnimator.SetBool("isGrounded", isGrounded);
-        }
+            mirrorAnimator.SetBool("isGrounded", originalAnimator.GetBool("isGrounded"));
 
-        // INVERT movement direction animations
         if (invertDepthAnimations)
         {
-            // Swap forward and backward animations
             if (HasParameter(originalAnimator, "movingBackwards") && HasParameter(mirrorAnimator, "movingForward"))
-            {
-                bool originalMovingBack = originalAnimator.GetBool("movingBackwards");
-                mirrorAnimator.SetBool("movingForward", originalMovingBack);
-            }
-
+                mirrorAnimator.SetBool("movingForward", originalAnimator.GetBool("movingBackwards"));
             if (HasParameter(originalAnimator, "movingForward") && HasParameter(mirrorAnimator, "movingBackwards"))
-            {
-                bool originalMovingForward = originalAnimator.GetBool("movingForward");
-                mirrorAnimator.SetBool("movingBackwards", originalMovingForward);
-            }
+                mirrorAnimator.SetBool("movingBackwards", originalAnimator.GetBool("movingForward"));
         }
         else
         {
-            // Don't invert - keep same direction
             if (HasParameter(originalAnimator, "movingBackwards"))
-            {
-                bool movingBackwards = originalAnimator.GetBool("movingBackwards");
-                mirrorAnimator.SetBool("movingBackwards", movingBackwards);
-            }
-
+                mirrorAnimator.SetBool("movingBackwards", originalAnimator.GetBool("movingBackwards"));
             if (HasParameter(originalAnimator, "movingForward"))
-            {
-                bool movingForward = originalAnimator.GetBool("movingForward");
-                mirrorAnimator.SetBool("movingForward", movingForward);
-            }
+                mirrorAnimator.SetBool("movingForward", originalAnimator.GetBool("movingForward"));
         }
     }
 
-    // Helper function to check if animator has a parameter
     private bool HasParameter(Animator animator, string paramName)
     {
-        if (animator == null) return false;
-
         foreach (AnimatorControllerParameter param in animator.parameters)
-        {
             if (param.name == paramName)
                 return true;
-        }
         return false;
     }
 
-    // Public helper methods
-    public void SetMirrorAxes(float xAxis, float yAxis, float zAxis)
+    public void SetMirrorAxes(float x, float y, float z)
     {
-        mirrorAxisX = xAxis;
-        mirrorAxisY = yAxis;
-        mirrorAxisZ = zAxis;
+        mirrorAxisX = x;
+        mirrorAxisY = y;
+        mirrorAxisZ = z;
     }
 
     public void UpdateMirrorAxesToCurrentPlayer()
     {
         if (originalPlayer != null)
         {
-            mirrorAxisX = originalPlayer.position.x;
-            mirrorAxisY = originalPlayer.position.y;
-            mirrorAxisZ = originalPlayer.position.z;
-        }
-    }
-
-    public void SetOriginalPlayer(Transform player)
-    {
-        originalPlayer = player;
-        if (player != null)
-        {
-            originalSpriteRenderer = player.GetComponentInChildren<SpriteRenderer>();
-            originalAnimator = player.GetComponentInChildren<Animator>();
-            lastOriginalPosition = player.position;
-            mirrorAxisX = player.position.x;
-            mirrorAxisY = player.position.y;
-            mirrorAxisZ = player.position.z;
+            mirrorAxisX = originalPlayer.transform.position.x;
+            mirrorAxisY = originalPlayer.transform.position.y;
+            mirrorAxisZ = originalPlayer.transform.position.z;
         }
     }
 
@@ -331,15 +233,11 @@ public class InvertedPlayerMirror : MonoBehaviour
         mirrorAlpha = alpha;
         mirrorTint = tint;
 
-        if (enable && mirrorSpriteRenderer != null)
+        if (mirrorSpriteRenderer != null)
         {
-            Color color = tint;
-            color.a = alpha;
-            mirrorSpriteRenderer.color = color;
-        }
-        else if (mirrorSpriteRenderer != null)
-        {
-            mirrorSpriteRenderer.color = Color.white;
+            Color c = tint;
+            c.a = alpha;
+            mirrorSpriteRenderer.color = enable ? c : Color.white;
         }
     }
 
@@ -347,33 +245,27 @@ public class InvertedPlayerMirror : MonoBehaviour
     {
         if (originalPlayer == null) return;
 
-        // Draw mirror axis lines
+        float len = 50f;
         Gizmos.color = Color.yellow;
-        float lineLength = 50f;
+        Gizmos.DrawLine(
+            new Vector3(originalPlayer.transform.position.x - len, mirrorAxisY, originalPlayer.transform.position.z),
+            new Vector3(originalPlayer.transform.position.x + len, mirrorAxisY, originalPlayer.transform.position.z)
+        );
 
-        // Horizontal axis line (Y)
-        Vector3 axisStartY = new Vector3(originalPlayer.position.x - lineLength, mirrorAxisY, originalPlayer.position.z);
-        Vector3 axisEndY = new Vector3(originalPlayer.position.x + lineLength, mirrorAxisY, originalPlayer.position.z);
-        Gizmos.DrawLine(axisStartY, axisEndY);
-
-        // Vertical axis line (X)
         Gizmos.color = Color.red;
-        Vector3 axisStartX = new Vector3(mirrorAxisX, originalPlayer.position.y - lineLength, originalPlayer.position.z);
-        Vector3 axisEndX = new Vector3(mirrorAxisX, originalPlayer.position.y + lineLength, originalPlayer.position.z);
-        Gizmos.DrawLine(axisStartX, axisEndX);
+        Gizmos.DrawLine(
+            new Vector3(mirrorAxisX, originalPlayer.transform.position.y - len, originalPlayer.transform.position.z),
+            new Vector3(mirrorAxisX, originalPlayer.transform.position.y + len, originalPlayer.transform.position.z)
+        );
 
-        // Draw connection line between original and mirror
         Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(originalPlayer.position, transform.position);
+        Gizmos.DrawLine(originalPlayer.transform.position, transform.position);
 
-        // Draw position markers
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(originalPlayer.position, 0.3f);
+        Gizmos.DrawWireSphere(originalPlayer.transform.position, 0.3f);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, 0.3f);
-
-        // Draw center point
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(new Vector3(mirrorAxisX, mirrorAxisY, originalPlayer.position.z), 0.5f);
+        Gizmos.DrawWireSphere(new Vector3(mirrorAxisX, mirrorAxisY, originalPlayer.transform.position.z), 0.5f);
     }
 }

@@ -1,3 +1,5 @@
+// ===== EnhancedPlayer25D.cs =====
+// Place this on the NORMAL player
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,7 +72,6 @@ public class EnhancedPlayer25D : MonoBehaviour
             return;
         }
 
-        // Rigidbody setup
         rb.useGravity = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -89,12 +90,6 @@ public class EnhancedPlayer25D : MonoBehaviour
         }
 
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        if (spriteRenderer == null)
-        {
-            Debug.LogWarning("EnhancedPlayer25D: No SpriteRenderer found in children");
-        }
-
-        // Get Animator component
         anim = GetComponentInChildren<Animator>();
 
         if (anim == null)
@@ -118,19 +113,16 @@ public class EnhancedPlayer25D : MonoBehaviour
         }
 
         targetDepth = transform.position.z;
-
         Debug.Log("EnhancedPlayer25D initialized successfully!");
     }
 
     void Update()
     {
-        // Get input
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
-        // Depth input using specific keys
         depthInput = 0f;
-        if (Input.GetKey(depthForwardKey)) depthInput = 1f;      // W = forward (into background)
-        else if (Input.GetKey(depthBackKey)) depthInput = -1f;   // S = backward (toward camera)
+        if (Input.GetKey(depthForwardKey)) depthInput = 1f;
+        else if (Input.GetKey(depthBackKey)) depthInput = -1f;
 
         wasGrounded = isGrounded;
         isGrounded = CheckGrounded();
@@ -150,14 +142,11 @@ public class EnhancedPlayer25D : MonoBehaviour
             canJump = true;
         }
 
-        // Jump input buffering
         if (Input.GetButtonDown("Jump"))
         {
             lastJumpPressedTime = Time.time;
-            if (showDebugInfo) Debug.Log("Jump button pressed");
         }
 
-        // Jump with coyote time and jump buffering
         bool jumpBufferActive = lastJumpPressedTime + jumpBufferTime > Time.time;
         bool coyoteTimeActive = lastGroundedTime + coyoteTime > Time.time;
 
@@ -167,49 +156,35 @@ public class EnhancedPlayer25D : MonoBehaviour
             lastGroundedTime = 0;
             lastJumpPressedTime = 0;
             canJump = false;
-            if (showDebugInfo) Debug.Log("JUMP! Velocity: " + verticalVelocity);
         }
 
-        // Apply gravity when airborne
         if (!isGrounded)
         {
             float gravityMultiplier = verticalVelocity < 0 ? fallGravityMultiplier : 1f;
             verticalVelocity -= gravity * gravityMultiplier * Time.deltaTime;
         }
 
-        // Variable jump height
         if (Input.GetButtonUp("Jump") && verticalVelocity > 0)
         {
             verticalVelocity *= 0.5f;
         }
 
-        // === ANIMATION UPDATE SECTION ===
         if (anim != null)
         {
             anim.SetBool("isGrounded", isGrounded);
-
-            float horizontalSpeed = Mathf.Abs(currentVelocityX);
-
-            // Determine direction
-            isMovingBackwards = depthInput > 0; // W key
-            isMovingForward = depthInput < 0;   // S key
-
-            // Set animator booleans
+            isMovingBackwards = depthInput > 0;
+            isMovingForward = depthInput < 0;
             anim.SetBool("movingBackwards", isMovingBackwards);
             anim.SetBool("movingForward", isMovingForward);
-
-            // Calculate overall movement for Speed parameter
             float totalMovement = Mathf.Abs(horizontalInput) + Mathf.Abs(depthInput);
             anim.SetFloat("Speed", totalMovement > 0 ? moveSpeed : 0f);
         }
 
-        // Flip sprite based on horizontal movement direction
         if (flipSpriteOnMove && spriteRenderer != null && horizontalInput != 0 && !isMovingBackwards && !isMovingForward)
         {
             spriteRenderer.flipX = horizontalInput < 0;
         }
 
-        // Calculate target depth
         if (depthInput != 0)
         {
             targetDepth += depthInput * depthMoveSpeed * Time.deltaTime;
@@ -220,7 +195,6 @@ public class EnhancedPlayer25D : MonoBehaviour
             targetDepth = transform.position.z;
         }
 
-        // Scale based on depth
         if (scaleChangeWithDepth > 0)
         {
             float depthPercent = (transform.position.z - minDepth) / (maxDepth - minDepth);
@@ -240,34 +214,17 @@ public class EnhancedPlayer25D : MonoBehaviour
 
         RaycastHit hit;
 
-        // Center raycast
         if (Physics.Raycast(center, Vector3.down, out hit, distance, groundLayer))
         {
             if (showDebugInfo) Debug.DrawRay(center, Vector3.down * distance, Color.green);
             return true;
         }
 
-        // Forward and back raycasts
-        if (Physics.Raycast(center + transform.forward * radius * 0.5f, Vector3.down, out hit, distance, groundLayer))
+        if (Physics.Raycast(center + transform.forward * radius * 0.5f, Vector3.down, out hit, distance, groundLayer) ||
+            Physics.Raycast(center - transform.forward * radius * 0.5f, Vector3.down, out hit, distance, groundLayer) ||
+            Physics.Raycast(center + transform.right * radius * 0.5f, Vector3.down, out hit, distance, groundLayer) ||
+            Physics.Raycast(center - transform.right * radius * 0.5f, Vector3.down, out hit, distance, groundLayer))
         {
-            if (showDebugInfo) Debug.DrawRay(center + transform.forward * radius * 0.5f, Vector3.down * distance, Color.green);
-            return true;
-        }
-        if (Physics.Raycast(center - transform.forward * radius * 0.5f, Vector3.down, out hit, distance, groundLayer))
-        {
-            if (showDebugInfo) Debug.DrawRay(center - transform.forward * radius * 0.5f, Vector3.down * distance, Color.green);
-            return true;
-        }
-
-        // Side raycasts
-        if (Physics.Raycast(center + transform.right * radius * 0.5f, Vector3.down, out hit, distance, groundLayer))
-        {
-            if (showDebugInfo) Debug.DrawRay(center + transform.right * radius * 0.5f, Vector3.down * distance, Color.green);
-            return true;
-        }
-        if (Physics.Raycast(center - transform.right * radius * 0.5f, Vector3.down, out hit, distance, groundLayer))
-        {
-            if (showDebugInfo) Debug.DrawRay(center - transform.right * radius * 0.5f, Vector3.down * distance, Color.green);
             return true;
         }
 
@@ -277,16 +234,11 @@ public class EnhancedPlayer25D : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Horizontal movement
         float targetVelocityX = horizontalInput * moveSpeed;
 
         if (Mathf.Abs(horizontalInput) > 0.01f)
         {
-            currentVelocityX = Mathf.MoveTowards(
-                currentVelocityX,
-                targetVelocityX,
-                acceleration * Time.fixedDeltaTime
-            );
+            currentVelocityX = Mathf.MoveTowards(currentVelocityX, targetVelocityX, acceleration * Time.fixedDeltaTime);
         }
         else
         {
@@ -294,10 +246,8 @@ public class EnhancedPlayer25D : MonoBehaviour
         }
 
         verticalVelocity = Mathf.Clamp(verticalVelocity, -50f, 50f);
-
         rb.velocity = new Vector3(currentVelocityX, verticalVelocity, 0);
 
-        // Depth movement
         if (Mathf.Abs(depthInput) > 0.01f)
         {
             Vector3 newPos = transform.position;
@@ -306,7 +256,6 @@ public class EnhancedPlayer25D : MonoBehaviour
         }
     }
 
-    // Public methods
     public void ResetToPosition(Vector3 position)
     {
         transform.position = position;
@@ -316,6 +265,7 @@ public class EnhancedPlayer25D : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
+    // PUBLIC GETTER METHODS - For InvertedPlayerMirror
     public bool IsGrounded()
     {
         return isGrounded;
@@ -329,5 +279,20 @@ public class EnhancedPlayer25D : MonoBehaviour
     public bool IsMovingBackwards()
     {
         return isMovingBackwards;
+    }
+
+    public float GetHorizontalInput()
+    {
+        return horizontalInput;
+    }
+
+    public float GetDepthInput()
+    {
+        return depthInput;
+    }
+
+    public float GetVerticalVelocity()
+    {
+        return verticalVelocity;
     }
 }
