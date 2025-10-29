@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://cbwjruyfxfj8w"
+path="res://.godot/imported/vs-input-new-system-connect-nodes-example.png-8d91f627c5e666518f931d365ff77735.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://MockPS-2.5D/My project 2.5D/Library/PackageCache/com.unity.visualscripting@1.9.4/Documentation~/images/vs-input-new-system-connect-nodes-example.png"
+dest_files=["res://.godot/imported/vs-input-new-system-connect-nodes-example.png-8d91f627c5e666518f931d365ff77735.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

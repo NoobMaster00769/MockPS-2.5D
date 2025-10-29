@@ -1,0 +1,1306 @@
+fileFormatVersion: 2
+guid: 9081f31b3a0f91d448c91ae016f3f2c1
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_0
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 1351
+        width: 152
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54469ffe7710fe642a88f43f88a60287
+      internalID: -678528988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_1
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 1352
+        width: 181
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 097b57ee81d93fe41bc2640c344e19c2
+      internalID: 785391750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_2
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 1353
+        width: 201
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f73e2301596fab0409192318804e6b2e
+      internalID: 445477038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_3
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 1351
+        width: 144
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f01c509e6301e9b47b538871575e4fea
+      internalID: -662893957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_4
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 1356
+        width: 208
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cea255f3fef895142b5275ba60dd93e8
+      internalID: 139515015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_5
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 1351
+        width: 157
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c50ffb49fbff874c85b673a97d7c582
+      internalID: 978177188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_6
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 1351
+        width: 157
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cac3dfb980c16b149a94553a017195bf
+      internalID: 1748139449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_7
+      rect:
+        serializedVersion: 2
+        x: 1482
+        y: 1351
+        width: 175
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a4888ca099d0444d81a2e40488fc125
+      internalID: -1137731235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_8
+      rect:
+        serializedVersion: 2
+        x: 1690
+        y: 1357
+        width: 175
+        height: 239
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 736e22b0e1097d74dbf66eff5a05e900
+      internalID: 1100835033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_9
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 1079
+        width: 152
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7830b312a185e1544a8f2b43f35522eb
+      internalID: -1444463638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_10
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 1080
+        width: 199
+        height: 188
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d63387af058c0ba468f0936ac702dd38
+      internalID: 1889666139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_11
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 1079
+        width: 207
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52a6585228ae6824789a0d9dfa6e215e
+      internalID: 2107542575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_12
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 1079
+        width: 189
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d76a653da8c8ca448a1cfc5a68ca64c
+      internalID: -1537708236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_13
+      rect:
+        serializedVersion: 2
+        x: 851
+        y: 1079
+        width: 192
+        height: 212
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2be23f7b5d775b5468064fff244b5c32
+      internalID: 82295187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_14
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 1079
+        width: 198
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b0227ca33d5d2242be500f91a169a86
+      internalID: 1876698212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_15
+      rect:
+        serializedVersion: 2
+        x: 1298
+        y: 1079
+        width: 131
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 697ac93ce778d2541af46ee139fe0e98
+      internalID: -1285413666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_16
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 1080
+        width: 165
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88d6d8d13c331fc49833c6a545a20f30
+      internalID: 1741665722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_17
+      rect:
+        serializedVersion: 2
+        x: 1700
+        y: 1083
+        width: 166
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd8f346fb602662468645de24ddef0cb
+      internalID: 71810477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_18
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 807
+        width: 176
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d36969e48054fb468add39a8e8367f3
+      internalID: 2123294695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_19
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 814
+        width: 189
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48013394b35cc1c4ea75c0f11e58ac76
+      internalID: -158212120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_20
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 811
+        width: 166
+        height: 239
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee01961349dc6ff47831e213f39b2481
+      internalID: -131132474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_21
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 807
+        width: 141
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1412f15f3ee6dbb48a9ee857d8a6a88a
+      internalID: 1249651307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_22
+      rect:
+        serializedVersion: 2
+        x: 861
+        y: 807
+        width: 160
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7edd31335c1562c48822432ea09055bc
+      internalID: 1251666588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_23
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 807
+        width: 132
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19da1bd90d4150044a1eca1be42622e5
+      internalID: 876467431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_24
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 807
+        width: 170
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f14ddd9727c795144b75ed39d3f083df
+      internalID: 1214900920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_25
+      rect:
+        serializedVersion: 2
+        x: 1475
+        y: 808
+        width: 185
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4c6c2562ab4a6f409ce4251831d38dd
+      internalID: -888330133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_26
+      rect:
+        serializedVersion: 2
+        x: 1672
+        y: 818
+        width: 208
+        height: 218
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f2f7ec537006dd4e81808203909fabb
+      internalID: 1519634187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_27
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 535
+        width: 188
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e70cf3c8d55af8489c5e3da727e4990
+      internalID: -1693644482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_28
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 535
+        width: 180
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fa5be8137bae7948906a18e234a6d34
+      internalID: -1262757831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_29
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 535
+        width: 203
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58fe3d8adcdb68b40984cb0a116277e3
+      internalID: 1479840781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_30
+      rect:
+        serializedVersion: 2
+        x: 664
+        y: 535
+        width: 149
+        height: 212
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6836c743d24566438fffd6cbb817513
+      internalID: -513346004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_31
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 535
+        width: 201
+        height: 190
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87ce54c8178bbff44936ca877f5e5cc6
+      internalID: -2133064134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_32
+      rect:
+        serializedVersion: 2
+        x: 1085
+        y: 535
+        width: 137
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2b6b928f6f6a994b9fda7c20a6f7f78
+      internalID: 1802111935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_33
+      rect:
+        serializedVersion: 2
+        x: 1256
+        y: 545
+        width: 204
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d14be9303e965e4dabd70647c9e24b8
+      internalID: 1109605331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_34
+      rect:
+        serializedVersion: 2
+        x: 1465
+        y: 535
+        width: 204
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f82c582862739284ab8d38c057c30fc4
+      internalID: -1925622998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_35
+      rect:
+        serializedVersion: 2
+        x: 1690
+        y: 551
+        width: 175
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2a0a2a57e54510458eb3bdf003d9eaf
+      internalID: 251251913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_36
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 265
+        width: 166
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62a4ad70ef5d05949a2455ff6a4d4c54
+      internalID: -2062185981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_37
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 263
+        width: 154
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f07bbdb869ad1614a8f020dcdaf5cd56
+      internalID: -639352014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_38
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 263
+        width: 140
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17ea8f76125710f46828efa7de2b7650
+      internalID: 172580111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_39
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 263
+        width: 148
+        height: 234
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d1740a8290f4794d9853aba2ec093a1
+      internalID: 1360324388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_40
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 263
+        width: 167
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20eb84dc40e47af41af45b95d383f93f
+      internalID: -923921850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_41
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 263
+        width: 156
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 564d0469540fe6845bca42ba3108ef5b
+      internalID: 1310633022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_42
+      rect:
+        serializedVersion: 2
+        x: 1289
+        y: 263
+        width: 140
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a25fc9e5e58b6449a45bc04d6ba2a27
+      internalID: 1194851685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_43
+      rect:
+        serializedVersion: 2
+        x: 1486
+        y: 263
+        width: 151
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0df6e79daf614f44ab9204311b1b2d2
+      internalID: 861379758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_44
+      rect:
+        serializedVersion: 2
+        x: 1672
+        y: 304
+        width: 207
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47b5050896a8f8f45b889881950da6db
+      internalID: 158264629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_45
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 3
+        width: 166
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e291dd906759dde44be6183a6f528edb
+      internalID: -1880591630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_46
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 1
+        width: 154
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97891f53b557b3f4a9d0b58bba6e007d
+      internalID: -483052313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_47
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 1
+        width: 140
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1252d8def8ec92747a3e5b4960d22266
+      internalID: -1226595201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_48
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 1
+        width: 148
+        height: 234
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 744cfd93b2f52e2449470058ef2f8f20
+      internalID: 1036156522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_49
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 1
+        width: 167
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cc9f78570ae8fa4e844938cc878c77e
+      internalID: -1415404170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_50
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1
+        width: 156
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7962fe6298317f049914df0585d8dcef
+      internalID: -932444513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_51
+      rect:
+        serializedVersion: 2
+        x: 1289
+        y: 1
+        width: 140
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b754e697062f43d4d8e475d7dab53966
+      internalID: 774698603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_Male_Adventurer_Papered_52
+      rect:
+        serializedVersion: 2
+        x: 1486
+        y: 1
+        width: 151
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77a8d25c8b86c2840a63de5551a6cde9
+      internalID: -136088354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Kenney_Male_Adventurer_Papered_0: -678528988
+      Kenney_Male_Adventurer_Papered_1: 785391750
+      Kenney_Male_Adventurer_Papered_10: 1889666139
+      Kenney_Male_Adventurer_Papered_11: 2107542575
+      Kenney_Male_Adventurer_Papered_12: -1537708236
+      Kenney_Male_Adventurer_Papered_13: 82295187
+      Kenney_Male_Adventurer_Papered_14: 1876698212
+      Kenney_Male_Adventurer_Papered_15: -1285413666
+      Kenney_Male_Adventurer_Papered_16: 1741665722
+      Kenney_Male_Adventurer_Papered_17: 71810477
+      Kenney_Male_Adventurer_Papered_18: 2123294695
+      Kenney_Male_Adventurer_Papered_19: -158212120
+      Kenney_Male_Adventurer_Papered_2: 445477038
+      Kenney_Male_Adventurer_Papered_20: -131132474
+      Kenney_Male_Adventurer_Papered_21: 1249651307
+      Kenney_Male_Adventurer_Papered_22: 1251666588
+      Kenney_Male_Adventurer_Papered_23: 876467431
+      Kenney_Male_Adventurer_Papered_24: 1214900920
+      Kenney_Male_Adventurer_Papered_25: -888330133
+      Kenney_Male_Adventurer_Papered_26: 1519634187
+      Kenney_Male_Adventurer_Papered_27: -1693644482
+      Kenney_Male_Adventurer_Papered_28: -1262757831
+      Kenney_Male_Adventurer_Papered_29: 1479840781
+      Kenney_Male_Adventurer_Papered_3: -662893957
+      Kenney_Male_Adventurer_Papered_30: -513346004
+      Kenney_Male_Adventurer_Papered_31: -2133064134
+      Kenney_Male_Adventurer_Papered_32: 1802111935
+      Kenney_Male_Adventurer_Papered_33: 1109605331
+      Kenney_Male_Adventurer_Papered_34: -1925622998
+      Kenney_Male_Adventurer_Papered_35: 251251913
+      Kenney_Male_Adventurer_Papered_36: -2062185981
+      Kenney_Male_Adventurer_Papered_37: -639352014
+      Kenney_Male_Adventurer_Papered_38: 172580111
+      Kenney_Male_Adventurer_Papered_39: 1360324388
+      Kenney_Male_Adventurer_Papered_4: 139515015
+      Kenney_Male_Adventurer_Papered_40: -923921850
+      Kenney_Male_Adventurer_Papered_41: 1310633022
+      Kenney_Male_Adventurer_Papered_42: 1194851685
+      Kenney_Male_Adventurer_Papered_43: 861379758
+      Kenney_Male_Adventurer_Papered_44: 158264629
+      Kenney_Male_Adventurer_Papered_45: -1880591630
+      Kenney_Male_Adventurer_Papered_46: -483052313
+      Kenney_Male_Adventurer_Papered_47: -1226595201
+      Kenney_Male_Adventurer_Papered_48: 1036156522
+      Kenney_Male_Adventurer_Papered_49: -1415404170
+      Kenney_Male_Adventurer_Papered_5: 978177188
+      Kenney_Male_Adventurer_Papered_50: -932444513
+      Kenney_Male_Adventurer_Papered_51: 774698603
+      Kenney_Male_Adventurer_Papered_52: -136088354
+      Kenney_Male_Adventurer_Papered_6: 1748139449
+      Kenney_Male_Adventurer_Papered_7: -1137731235
+      Kenney_Male_Adventurer_Papered_8: 1100835033
+      Kenney_Male_Adventurer_Papered_9: -1444463638
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

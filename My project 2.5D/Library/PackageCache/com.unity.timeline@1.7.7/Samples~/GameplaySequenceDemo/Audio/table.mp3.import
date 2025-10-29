@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cpb4hvghkj12g"
+path="res://.godot/imported/table.mp3-0078feb1e0eabdc8e9a10d101bbe4a03.mp3str"
+
+[deps]
+
+source_file="res://MockPS-2.5D/My project 2.5D/Library/PackageCache/com.unity.timeline@1.7.7/Samples~/GameplaySequenceDemo/Audio/table.mp3"
+dest_files=["res://.godot/imported/table.mp3-0078feb1e0eabdc8e9a10d101bbe4a03.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
