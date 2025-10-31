@@ -1,58 +1,33 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 /// <summary>
-/// Vertical split-screen that SHARES backgrounds between both cameras.
-/// Uses Camera Culling Masks and Layers instead of duplicating backgrounds.
+/// Vertical split-screen manager - MANUAL CAMERA VERSION
+/// Assign your manually created cameras in the Inspector
+/// Supports mirror background setup with parallax
 /// </summary>
 public class VerticalSplitScreenManager : MonoBehaviour
 {
-    [Header("Camera Setup")]
-    [Tooltip("Camera for top player (inverted)")]
+    [Header("‚öôÔ∏è MANUAL CAMERA ASSIGNMENT")]
+    [Tooltip("Drag your manually created TopCamera here")]
     public Camera topCamera;
 
-    [Tooltip("Camera for bottom player (main)")]
+    [Tooltip("Drag your manually created BottomCamera here")]
     public Camera bottomCamera;
 
     [Header("Player References")]
-    [Tooltip("Top player to follow")]
+    [Tooltip("Top player to follow (InvertedPlayer)")]
     public Transform topPlayer;
 
-    [Tooltip("Bottom player to follow")]
+    [Tooltip("Bottom player to follow (Main Player)")]
     public Transform bottomPlayer;
 
     [Header("Split Settings")]
     [Range(0.3f, 0.7f)]
-    [Tooltip("How much screen the top camera gets (0.5 = equal split)")]
-    public float topScreenRatio = 0.5f;
+    [Tooltip("How much screen the bottom gets (0.5 = equal split)")]
+    public float bottomScreenRatio = 0.5f;
 
     [Tooltip("Gap between screens in pixels")]
     public float dividerGap = 2f;
-
-    [Header("Camera Settings")]
-    [Tooltip("How much of the scene to show (higher = more zoomed out)")]
-    public float orthographicSize = 10f;
-
-    [Tooltip("Fixed Y position for top camera")]
-    public float topCameraYPosition = 8f;
-
-    [Tooltip("Fixed Y position for bottom camera")]
-    public float bottomCameraYPosition = 0f;
-
-    [Tooltip("Camera Z distance (negative = away from scene)")]
-    public float cameraZDistance = -10f;
-
-    [Header("Camera Rotation (for 2.5D depth)")]
-    [Tooltip("Rotate top camera on X axis to show platform depth")]
-    [Range(-15f, 15f)]
-    public float topCameraXRotation = 5f;
-
-    [Tooltip("Rotate bottom camera on X axis to show platform depth")]
-    [Range(-15f, 15f)]
-    public float bottomCameraXRotation = -5f;
-
-    [Tooltip("Apply Y rotation for angled perspective")]
-    [Range(-10f, 10f)]
-    public float cameraYRotation = 0f;
 
     [Header("Camera Follow")]
     [Tooltip("Smooth speed for horizontal following")]
@@ -66,18 +41,22 @@ public class VerticalSplitScreenManager : MonoBehaviour
     public float minX = -50f;
     public float maxX = 50f;
 
-    [Header("Shared Background Settings")]
-    [Tooltip("The shared background parallax system - both cameras will use this")]
-    public Transform sharedBackgroundParent;
+    [Header("Background Settings")]
+    [Tooltip("Bottom level background parent")]
+    public Transform bottomBackgroundParent;
+
+    [Tooltip("Top level background parent (mirrored)")]
+    public Transform topBackgroundParent;
 
     [Tooltip("Auto-find backgrounds on start")]
     public bool autoFindBackgrounds = true;
 
-    [Tooltip("FORCE parallax to follow bottom camera only (recommended for synchronized backgrounds)")]
-    public bool forceBottomCameraParallax = true;
+    [Header("Parallax Configuration")]
+    [Tooltip("Which camera should bottom parallax follow?")]
+    public ParallaxFollowMode bottomParallaxFollows = ParallaxFollowMode.BottomCamera;
 
-    [Tooltip("Parallax follows which camera? (ignored if forceBottomCameraParallax is true)")]
-    public ParallaxFollowMode parallaxFollowMode = ParallaxFollowMode.BottomCamera;
+    [Tooltip("Which camera should top parallax follow?")]
+    public ParallaxFollowMode topParallaxFollows = ParallaxFollowMode.TopCamera;
 
     [Header("Visual")]
     public bool showDividerLine = true;
@@ -87,174 +66,182 @@ public class VerticalSplitScreenManager : MonoBehaviour
     public bool showDebugInfo = false;
     public bool showCameraGizmos = true;
 
-    private SimpleParallax25D[] sharedParallaxLayers;
+    private SimpleParallax25D[] bottomParallaxLayers;
+    private SimpleParallax25D[] topParallaxLayers;
     private bool isInitialized = false;
 
     public enum ParallaxFollowMode
     {
         BottomCamera,
         TopCamera,
-        MidpointBetweenCameras
+        None
     }
 
     void Start()
     {
-        SetupCameras();
-        SetupSharedBackgrounds();
+        if (!ValidateSetup())
+        {
+            enabled = false;
+            return;
+        }
+
+        UpdateViewports();
+        SetupBackgrounds();
         isInitialized = true;
 
-        Debug.Log("VerticalSplitScreenManager initialized with SHARED backgrounds!");
+        if (showDebugInfo)
+        {
+            Debug.Log("=== VerticalSplitScreenManager Initialized ===");
+            Debug.Log($"Top Camera: {topCamera.name} | Position: {topCamera.transform.position}");
+            Debug.Log($"Bottom Camera: {bottomCamera.name} | Position: {bottomCamera.transform.position}");
+        }
     }
 
-    void SetupCameras()
+    bool ValidateSetup()
     {
-        // AUTO-CREATE CAMERAS IF MISSING
+        bool valid = true;
+
         if (topCamera == null)
         {
-            GameObject topCamObj = new GameObject("TopCamera");
-            topCamera = topCamObj.AddComponent<Camera>();
-            Debug.Log("Created TopCamera automatically");
+            Debug.LogError("VerticalSplitScreenManager: TopCamera not assigned! Please assign it in Inspector.");
+            valid = false;
         }
 
         if (bottomCamera == null)
         {
-            GameObject bottomCamObj = new GameObject("BottomCamera");
-            bottomCamera = bottomCamObj.AddComponent<Camera>();
-            Debug.Log("Created BottomCamera automatically");
+            Debug.LogError("VerticalSplitScreenManager: BottomCamera not assigned! Please assign it in Inspector.");
+            valid = false;
         }
 
-        // CONFIGURE VIEWPORTS
-        UpdateViewports();
+        if (topPlayer == null)
+        {
+            Debug.LogWarning("VerticalSplitScreenManager: Top player not assigned. Camera won't follow.");
+        }
 
-        // SET CAMERA DEPTHS
-        topCamera.depth = 1;
-        bottomCamera.depth = 0;
+        if (bottomPlayer == null)
+        {
+            Debug.LogWarning("VerticalSplitScreenManager: Bottom player not assigned. Camera won't follow.");
+        }
 
-        // CONFIGURE CAMERA SETTINGS - Both render everything (no layer culling)
-        topCamera.orthographic = true;
-        topCamera.orthographicSize = orthographicSize;
-        topCamera.cullingMask = -1; // Render everything
-
-        bottomCamera.orthographic = true;
-        bottomCamera.orthographicSize = orthographicSize;
-        bottomCamera.cullingMask = -1; // Render everything
-
-        // Set initial positions
-        topCamera.transform.position = new Vector3(
-            topPlayer != null ? topPlayer.position.x : 0f,
-            topCameraYPosition,
-            cameraZDistance
-        );
-
-        bottomCamera.transform.position = new Vector3(
-            bottomPlayer != null ? bottomPlayer.position.x : 0f,
-            bottomCameraYPosition,
-            cameraZDistance
-        );
-
-        // Enable cameras
-        topCamera.enabled = true;
-        bottomCamera.enabled = true;
-
-        // Match background colors
-        topCamera.backgroundColor = bottomCamera.backgroundColor;
-
-        // Set camera rotations for depth perception
-        topCamera.transform.rotation = Quaternion.Euler(topCameraXRotation, cameraYRotation, 0);
-        bottomCamera.transform.rotation = Quaternion.Euler(bottomCameraXRotation, cameraYRotation, 0);
-
-        Debug.Log($"Cameras configured - Orthographic Size: {orthographicSize}");
-        Debug.Log($"Top Y: {topCameraYPosition}, Bottom Y: {bottomCameraYPosition}");
-        Debug.Log($"Top Rotation: {topCameraXRotation}∞, Bottom Rotation: {bottomCameraXRotation}∞");
+        return valid;
     }
 
     void UpdateViewports()
     {
-        float dividerOffset = dividerGap / Screen.height;
+        if (topCamera == null || bottomCamera == null) return;
 
-        // TOP CAMERA - upper portion
-        topCamera.rect = new Rect(
-            0,
-            topScreenRatio + dividerOffset,
-            1,
-            (1f - topScreenRatio) - dividerOffset
-        );
+        float dividerOffset = dividerGap / Screen.height;
 
         // BOTTOM CAMERA - lower portion
         bottomCamera.rect = new Rect(
             0,
             0,
             1,
-            topScreenRatio - dividerOffset
+            bottomScreenRatio - dividerOffset
         );
+
+        // TOP CAMERA - upper portion
+        topCamera.rect = new Rect(
+            0,
+            bottomScreenRatio + dividerOffset,
+            1,
+            (1f - bottomScreenRatio) - dividerOffset
+        );
+
+        // Set camera depths
+        topCamera.depth = 1;
+        bottomCamera.depth = 0;
+
+        if (showDebugInfo)
+        {
+            Debug.Log($"Viewports updated - Bottom: {bottomScreenRatio * 100:F1}% | Top: {(1f - bottomScreenRatio) * 100:F1}%");
+        }
     }
 
-    void SetupSharedBackgrounds()
+    void SetupBackgrounds()
     {
-        // Find shared background parent
-        if (sharedBackgroundParent == null && autoFindBackgrounds)
+        if (autoFindBackgrounds)
         {
-            // Try common background parent names
-            GameObject bgObj = GameObject.Find("Background") ??
-                             GameObject.Find("Backgrounds") ??
-                             GameObject.Find("TopBackground") ??
-                             GameObject.Find("BottomBackground");
-
-            if (bgObj != null)
+            // Auto-find bottom background
+            if (bottomBackgroundParent == null)
             {
-                sharedBackgroundParent = bgObj.transform;
-                Debug.Log($"Auto-found background parent: {bgObj.name}");
+                GameObject bgObj = GameObject.Find("Background");
+                if (bgObj != null)
+                {
+                    bottomBackgroundParent = bgObj.transform;
+                    Debug.Log($"Auto-found bottom background: {bgObj.name}");
+                }
+            }
+
+            // Auto-find top background
+            if (topBackgroundParent == null)
+            {
+                GameObject bgTopObj = GameObject.Find("BackgroundForTop") ??
+                                      GameObject.Find("Background_TopLevel") ??
+                                      GameObject.Find("BackGroundTop");
+                if (bgTopObj != null)
+                {
+                    topBackgroundParent = bgTopObj.transform;
+                    Debug.Log($"Auto-found top background: {bgTopObj.name}");
+                }
             }
         }
 
-        // Get all parallax layers
-        if (sharedBackgroundParent != null)
+        // Setup bottom parallax
+        if (bottomBackgroundParent != null)
         {
-            sharedParallaxLayers = sharedBackgroundParent.GetComponentsInChildren<SimpleParallax25D>();
-            Debug.Log($"Found {sharedParallaxLayers.Length} shared parallax layers");
-        }
-        else
-        {
-            // Find all parallax in scene
-            sharedParallaxLayers = FindObjectsOfType<SimpleParallax25D>();
-            Debug.Log($"Found {sharedParallaxLayers.Length} parallax layers in scene");
-        }
+            bottomParallaxLayers = bottomBackgroundParent.GetComponentsInChildren<SimpleParallax25D>();
 
-        // Configure parallax to follow the chosen camera
-        ConfigureSharedParallax();
-    }
-
-    void ConfigureSharedParallax()
-    {
-        if (sharedParallaxLayers == null || sharedParallaxLayers.Length == 0)
-        {
-            Debug.LogWarning("No parallax layers found!");
-            return;
-        }
-
-        Camera targetCamera = GetParallaxTargetCamera();
-
-        foreach (var parallax in sharedParallaxLayers)
-        {
-            if (parallax != null)
+            if (bottomParallaxLayers.Length > 0)
             {
-                parallax.SetTargetCamera(targetCamera);
+                Camera targetCam = GetTargetCamera(bottomParallaxFollows);
+                if (targetCam != null)
+                {
+                    foreach (var parallax in bottomParallaxLayers)
+                    {
+                        if (parallax != null)
+                        {
+                            parallax.SetTargetCamera(targetCam);
+                        }
+                    }
+                    Debug.Log($"Bottom parallax: {bottomParallaxLayers.Length} layers following {targetCam.name}");
+                }
             }
         }
 
-        Debug.Log($"Configured {sharedParallaxLayers.Length} parallax layers to follow {targetCamera.name}");
+        // Setup top parallax
+        if (topBackgroundParent != null)
+        {
+            topParallaxLayers = topBackgroundParent.GetComponentsInChildren<SimpleParallax25D>();
+
+            if (topParallaxLayers.Length > 0)
+            {
+                Camera targetCam = GetTargetCamera(topParallaxFollows);
+                if (targetCam != null)
+                {
+                    foreach (var parallax in topParallaxLayers)
+                    {
+                        if (parallax != null)
+                        {
+                            parallax.SetTargetCamera(targetCam);
+                        }
+                    }
+                    Debug.Log($"Top parallax: {topParallaxLayers.Length} layers following {targetCam.name}");
+                }
+            }
+        }
     }
 
-    Camera GetParallaxTargetCamera()
+    Camera GetTargetCamera(ParallaxFollowMode mode)
     {
-        switch (parallaxFollowMode)
+        switch (mode)
         {
             case ParallaxFollowMode.TopCamera:
                 return topCamera;
             case ParallaxFollowMode.BottomCamera:
                 return bottomCamera;
-            case ParallaxFollowMode.MidpointBetweenCameras:
-                return bottomCamera; // Default to bottom for now
+            case ParallaxFollowMode.None:
+                return null;
             default:
                 return bottomCamera;
         }
@@ -262,32 +249,26 @@ public class VerticalSplitScreenManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isInitialized)
-            return;
+        if (!isInitialized) return;
 
-        // Update camera orthographic size
-        topCamera.orthographicSize = orthographicSize;
-        bottomCamera.orthographicSize = orthographicSize;
+        // Update viewports (handles window resize)
+        UpdateViewports();
 
-        // Update camera rotations
-        topCamera.transform.rotation = Quaternion.Euler(topCameraXRotation, cameraYRotation, 0);
-        bottomCamera.transform.rotation = Quaternion.Euler(bottomCameraXRotation, cameraYRotation, 0);
-
-        // Follow players ONLY on X axis
-        UpdateCameraPositionXOnly(topCamera, topPlayer, topCameraYPosition);
-        UpdateCameraPositionXOnly(bottomCamera, bottomPlayer, bottomCameraYPosition);
-
-        // If using midpoint mode, update parallax camera position
-        if (parallaxFollowMode == ParallaxFollowMode.MidpointBetweenCameras)
+        // Follow players on X axis only
+        if (bottomCamera != null && bottomPlayer != null)
         {
-            UpdateMidpointParallax();
+            UpdateCameraPositionXOnly(bottomCamera, bottomPlayer);
+        }
+
+        if (topCamera != null && topPlayer != null)
+        {
+            UpdateCameraPositionXOnly(topCamera, topPlayer);
         }
     }
 
-    void UpdateCameraPositionXOnly(Camera cam, Transform target, float fixedY)
+    void UpdateCameraPositionXOnly(Camera cam, Transform target)
     {
-        if (cam == null || target == null)
-            return;
+        if (cam == null || target == null) return;
 
         // Calculate desired X position
         float desiredX = target.position.x + xOffset;
@@ -302,36 +283,18 @@ public class VerticalSplitScreenManager : MonoBehaviour
         float currentX = cam.transform.position.x;
         float smoothedX = Mathf.Lerp(currentX, desiredX, Time.deltaTime * smoothSpeed);
 
-        // Set position: smooth X, fixed Y and Z
-        cam.transform.position = new Vector3(smoothedX, fixedY, cameraZDistance);
-    }
-
-    void UpdateMidpointParallax()
-    {
-        if (sharedParallaxLayers == null || sharedParallaxLayers.Length == 0)
-            return;
-
-        // Calculate midpoint X between both cameras
-        float midpointX = (topCamera.transform.position.x + bottomCamera.transform.position.x) / 2f;
-
-        // Create virtual camera position for parallax
-        Vector3 virtualCamPos = new Vector3(
-            midpointX,
-            (topCameraYPosition + bottomCameraYPosition) / 2f,
-            cameraZDistance
-        );
-
-        // Update parallax based on virtual position
-        // Note: This would require custom parallax handling
+        // Update position (only X changes, Y and Z stay fixed)
+        Vector3 newPos = cam.transform.position;
+        newPos.x = smoothedX;
+        cam.transform.position = newPos;
     }
 
     void OnGUI()
     {
-        if (!showDividerLine)
-            return;
+        if (!showDividerLine) return;
 
         // Draw divider line
-        float dividerY = Screen.height * topScreenRatio;
+        float dividerY = Screen.height * bottomScreenRatio;
         Rect dividerRect = new Rect(0, dividerY - dividerGap / 2f, Screen.width, dividerGap);
 
         Texture2D dividerTexture = new Texture2D(1, 1);
@@ -349,129 +312,123 @@ public class VerticalSplitScreenManager : MonoBehaviour
                 fontStyle = FontStyle.Bold
             };
 
-            GUI.Label(new Rect(10, dividerY - 25, 400, 20),
-                $"TOP VIEW - Y: {topCameraYPosition} | Zoom: {orthographicSize}", style);
+            string topInfo = topCamera != null ?
+                $"TOP VIEW - {topCamera.name} | Rot: {topCamera.transform.rotation.eulerAngles}" :
+                "TOP: NOT ASSIGNED";
 
-            GUI.Label(new Rect(10, dividerY + 5, 400, 20),
-                $"BOTTOM VIEW - Y: {bottomCameraYPosition} | Parallax: {parallaxFollowMode}", style);
+            string bottomInfo = bottomCamera != null ?
+                $"BOTTOM VIEW - {bottomCamera.name} | Rot: {bottomCamera.transform.rotation.eulerAngles}" :
+                "BOTTOM: NOT ASSIGNED";
+
+            GUI.Label(new Rect(10, dividerY - 30, 700, 20), topInfo, style);
+            GUI.Label(new Rect(10, dividerY + 10, 700, 20), bottomInfo, style);
         }
     }
 
     // PUBLIC METHODS
 
-    public void SetCameraRotations(float topX, float bottomX, float y = 0f)
-    {
-        topCameraXRotation = Mathf.Clamp(topX, -15f, 15f);
-        bottomCameraXRotation = Mathf.Clamp(bottomX, -15f, 15f);
-        cameraYRotation = Mathf.Clamp(y, -10f, 10f);
-
-        if (topCamera != null)
-            topCamera.transform.rotation = Quaternion.Euler(topCameraXRotation, cameraYRotation, 0);
-        if (bottomCamera != null)
-            bottomCamera.transform.rotation = Quaternion.Euler(bottomCameraXRotation, cameraYRotation, 0);
-
-        Debug.Log($"Camera rotations updated - Top: {topX}∞, Bottom: {bottomX}∞, Y: {y}∞");
-    }
-
-    public void SetOrthographicSize(float size)
-    {
-        orthographicSize = Mathf.Max(1f, size);
-        if (topCamera != null) topCamera.orthographicSize = orthographicSize;
-        if (bottomCamera != null) bottomCamera.orthographicSize = orthographicSize;
-        Debug.Log($"Orthographic size set to: {orthographicSize}");
-    }
-
-    public void SetCameraHeights(float topY, float bottomY)
-    {
-        topCameraYPosition = topY;
-        bottomCameraYPosition = bottomY;
-        Debug.Log($"Camera heights updated - Top: {topY}, Bottom: {bottomY}");
-    }
-
     public void SetSplitRatio(float ratio)
     {
-        topScreenRatio = Mathf.Clamp(ratio, 0.3f, 0.7f);
+        bottomScreenRatio = Mathf.Clamp(ratio, 0.3f, 0.7f);
         UpdateViewports();
-    }
-
-    public void SetParallaxFollowMode(ParallaxFollowMode mode)
-    {
-        parallaxFollowMode = mode;
-        ConfigureSharedParallax();
-        Debug.Log($"Parallax follow mode set to: {mode}");
+        Debug.Log($"Split ratio set to: {bottomScreenRatio * 100:F1}%");
     }
 
     public void RefreshBackgrounds()
     {
-        SetupSharedBackgrounds();
-        Debug.Log("Backgrounds refreshed");
+        SetupBackgrounds();
+        Debug.Log("Backgrounds refreshed!");
+    }
+
+    public void SetBottomParallaxFollow(ParallaxFollowMode mode)
+    {
+        bottomParallaxFollows = mode;
+
+        if (bottomParallaxLayers != null)
+        {
+            Camera targetCam = GetTargetCamera(mode);
+            if (targetCam != null)
+            {
+                foreach (var parallax in bottomParallaxLayers)
+                {
+                    if (parallax != null) parallax.SetTargetCamera(targetCam);
+                }
+            }
+        }
+
+        Debug.Log($"Bottom parallax now follows: {mode}");
+    }
+
+    public void SetTopParallaxFollow(ParallaxFollowMode mode)
+    {
+        topParallaxFollows = mode;
+
+        if (topParallaxLayers != null)
+        {
+            Camera targetCam = GetTargetCamera(mode);
+            if (targetCam != null)
+            {
+                foreach (var parallax in topParallaxLayers)
+                {
+                    if (parallax != null) parallax.SetTargetCamera(targetCam);
+                }
+            }
+        }
+
+        Debug.Log($"Top parallax now follows: {mode}");
     }
 
     void OnValidate()
     {
-        if (topCamera != null && bottomCamera != null)
+        if (Application.isPlaying && isInitialized)
         {
             UpdateViewports();
-            topCamera.orthographicSize = orthographicSize;
-            bottomCamera.orthographicSize = orthographicSize;
-            topCamera.transform.rotation = Quaternion.Euler(topCameraXRotation, cameraYRotation, 0);
-            bottomCamera.transform.rotation = Quaternion.Euler(bottomCameraXRotation, cameraYRotation, 0);
         }
     }
 
     void OnDrawGizmos()
     {
-        if (!showCameraGizmos || !Application.isPlaying)
-            return;
+        if (!showCameraGizmos) return;
 
-        // Draw camera view frustums
-        if (topCamera != null)
-        {
-            Gizmos.color = Color.cyan;
-            DrawCameraGizmo(topCamera, topCameraYPosition);
-        }
-
+        // Draw camera positions and directions
         if (bottomCamera != null)
         {
             Gizmos.color = Color.yellow;
-            DrawCameraGizmo(bottomCamera, bottomCameraYPosition);
+            Gizmos.DrawWireSphere(bottomCamera.transform.position, 0.8f);
+            Gizmos.DrawRay(bottomCamera.transform.position, bottomCamera.transform.forward * 5f);
         }
 
-        // Draw fixed Y lines
-        Gizmos.color = Color.red;
-        float lineLength = 100f;
-        Gizmos.DrawLine(
-            new Vector3(-lineLength, topCameraYPosition, 0),
-            new Vector3(lineLength, topCameraYPosition, 0)
-        );
-        Gizmos.DrawLine(
-            new Vector3(-lineLength, bottomCameraYPosition, 0),
-            new Vector3(lineLength, bottomCameraYPosition, 0)
-        );
+        if (topCamera != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(topCamera.transform.position, 0.8f);
+            Gizmos.DrawRay(topCamera.transform.position, topCamera.transform.forward * 5f);
+        }
 
-        // Draw shared background parent
-        if (sharedBackgroundParent != null)
+        // Draw background parent positions
+        if (bottomBackgroundParent != null)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(sharedBackgroundParent.position, 1f);
+            Gizmos.DrawWireCube(bottomBackgroundParent.position, Vector3.one * 2f);
         }
-    }
 
-    void DrawCameraGizmo(Camera cam, float yPos)
-    {
-        float height = cam.orthographicSize * 2f;
-        float width = height * cam.aspect;
+        if (topBackgroundParent != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireCube(topBackgroundParent.position, Vector3.one * 2f);
+        }
 
-        Vector3 center = new Vector3(cam.transform.position.x, yPos, 0);
+        // Draw players
+        if (bottomPlayer != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(bottomPlayer.position, Vector3.one * 0.5f);
+        }
 
-        Vector3 topLeft = center + new Vector3(-width / 2f, height / 2f, 0);
-        Vector3 topRight = center + new Vector3(width / 2f, height / 2f, 0);
-        Vector3 bottomLeft = center + new Vector3(-width / 2f, -height / 2f, 0);
-        Vector3 bottomRight = center + new Vector3(width / 2f, -height / 2f, 0);
-
-        Gizmos.DrawLine(topLeft, topRight);
-        Gizmos.DrawLine(topRight, bottomRight);
-        Gizmos.DrawLine(bottomRight, bottomLeft);
-        Gizmos.DrawLine(bottomLeft, topLeft);
+        if (topPlayer != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireCube(topPlayer.position, Vector3.one * 0.5f);
+        }
     }
 }

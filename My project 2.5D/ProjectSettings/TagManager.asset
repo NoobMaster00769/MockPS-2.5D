@@ -16,10 +16,10 @@ TagManager:
   - Water
   - UI
   - Wall
-  - BottomWorld
-  - TopWorld
-  - 
-  - 
+  - BottomLevel
+  - TopLevel
+  - SharedUI
+  - TopGround
   - 
   - 
   - 

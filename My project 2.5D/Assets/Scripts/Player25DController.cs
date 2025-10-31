@@ -1,11 +1,20 @@
 // ===== EnhancedPlayer25D.cs =====
-// Place this on the NORMAL player
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnhancedPlayer25D : MonoBehaviour
 {
+    public enum MoveKeyOption
+    {
+        A,
+        D
+    }
+
+    [Header("Custom Key Mapping")]
+    public MoveKeyOption moveLeftKey = MoveKeyOption.A;
+    public MoveKeyOption moveRightKey = MoveKeyOption.D;
+
     [Header("Movement Settings")]
     public float moveSpeed = 10f;
     public float acceleration = 50f;
@@ -108,7 +117,7 @@ public class EnhancedPlayer25D : MonoBehaviour
         {
             GameObject groundCheckObj = new GameObject("GroundCheck");
             groundCheckObj.transform.parent = transform;
-            groundCheckObj.transform.localPosition = new Vector3(0, -capsuleCollider.height / 2, 0);
+            groundCheckObj.transform.localPosition = new Vector3(0, -1f, 0);
             groundCheck = groundCheckObj.transform;
         }
 
@@ -118,8 +127,19 @@ public class EnhancedPlayer25D : MonoBehaviour
 
     void Update()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        // ===== CUSTOM A/D LOGIC =====
+        horizontalInput = 0f;
 
+        KeyCode leftKey = (moveLeftKey == MoveKeyOption.A) ? KeyCode.A : KeyCode.D;
+        KeyCode rightKey = (moveRightKey == MoveKeyOption.A) ? KeyCode.A : KeyCode.D;
+
+        if (Input.GetKey(leftKey))
+            horizontalInput = -1f;
+        else if (Input.GetKey(rightKey))
+            horizontalInput = 1f;
+        // =============================
+
+        // Depth input (W/S)
         depthInput = 0f;
         if (Input.GetKey(depthForwardKey)) depthInput = 1f;
         else if (Input.GetKey(depthBackKey)) depthInput = -1f;
@@ -206,30 +226,10 @@ public class EnhancedPlayer25D : MonoBehaviour
 
     bool CheckGrounded()
     {
-        if (capsuleCollider == null) return false;
-
         Vector3 center = capsuleCollider.bounds.center;
-        float radius = capsuleCollider.radius * 0.9f;
         float distance = capsuleCollider.bounds.extents.y + groundCheckDistance;
-
         RaycastHit hit;
-
-        if (Physics.Raycast(center, Vector3.down, out hit, distance, groundLayer))
-        {
-            if (showDebugInfo) Debug.DrawRay(center, Vector3.down * distance, Color.green);
-            return true;
-        }
-
-        if (Physics.Raycast(center + transform.forward * radius * 0.5f, Vector3.down, out hit, distance, groundLayer) ||
-            Physics.Raycast(center - transform.forward * radius * 0.5f, Vector3.down, out hit, distance, groundLayer) ||
-            Physics.Raycast(center + transform.right * radius * 0.5f, Vector3.down, out hit, distance, groundLayer) ||
-            Physics.Raycast(center - transform.right * radius * 0.5f, Vector3.down, out hit, distance, groundLayer))
-        {
-            return true;
-        }
-
-        if (showDebugInfo) Debug.DrawRay(center, Vector3.down * distance, Color.red);
-        return false;
+        return Physics.Raycast(center, Vector3.down, out hit, distance, groundLayer);
     }
 
     void FixedUpdate()
@@ -254,45 +254,5 @@ public class EnhancedPlayer25D : MonoBehaviour
             newPos.z = targetDepth;
             transform.position = newPos;
         }
-    }
-
-    public void ResetToPosition(Vector3 position)
-    {
-        transform.position = position;
-        targetDepth = position.z;
-        verticalVelocity = 0;
-        currentVelocityX = 0;
-        rb.velocity = Vector3.zero;
-    }
-
-    // PUBLIC GETTER METHODS - For InvertedPlayerMirror
-    public bool IsGrounded()
-    {
-        return isGrounded;
-    }
-
-    public Vector3 GetVelocity()
-    {
-        return new Vector3(currentVelocityX, verticalVelocity, 0);
-    }
-
-    public bool IsMovingBackwards()
-    {
-        return isMovingBackwards;
-    }
-
-    public float GetHorizontalInput()
-    {
-        return horizontalInput;
-    }
-
-    public float GetDepthInput()
-    {
-        return depthInput;
-    }
-
-    public float GetVerticalVelocity()
-    {
-        return verticalVelocity;
     }
 }
